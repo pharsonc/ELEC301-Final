@@ -1,2 +1,2 @@
-# ELEC301-Final
-Final project for ELEC301
+# ELEC301 Final Project
+Image segmentation of cat/dog images using machine learning. Training is done on the oxford-IIT "pets" dataset.
