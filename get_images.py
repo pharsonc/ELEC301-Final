@@ -17,13 +17,13 @@ def get_image_list(path):
 
 
 def get_images(im_list, folder_path):
-    """
-    Args:
-    	im_list: A list of file names.
-    	folder_path: 0 - /annotations/trimaps; 1 - /images
+	"""
+	Args:
+		im_list: A list of file names.
+		folder_path: 0 - /annotations/trimaps; 1 - /images/
 	Returns:
 		An array of numpy matrices representing all images
-    """
+	"""
 	if folder_path:
 		ext = '.jpg'
 		folder = './images/'
@@ -38,9 +38,7 @@ def get_images(im_list, folder_path):
 		im_arr.append(im)
 	return im_arr
 
+
 # Testing: Load first 5 images from list.txt
-# images = get_image_list('./annotations/list.txt')
-# arr = get_images(images[:5], 1)
-
-
-
+images = get_image_list('./annotations/list.txt')
+arr = get_images(images[:5], 1)
