@@ -36,6 +36,6 @@ def Bob(training, labels):
                     data[3][image.shape[0]*y + x] += image[x][y-1]
                 if (y != image.shape[1]):
                     data[4][image.shape[0]*y + x] += image[x][y+1]
-                data[6][image.shape[0]*y + x] += label[x][y]
+                data[5][image.shape[0]*y + x] += label[x][y]
         bigData.append(data)
     return bigData
