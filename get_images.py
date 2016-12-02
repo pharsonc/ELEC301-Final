@@ -65,5 +65,5 @@ def getIfromRGB(rgb):
 
 
 # Testing: Load first 5 images from list.txt
-images = get_image_list('./annotations/list.txt')
-arr = get_images(images[:5], 1)
+# images = get_image_list('./annotations/list.txt')
+# arr = get_images(images[:5], 1)
