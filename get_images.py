@@ -42,6 +42,8 @@ def get_images(im_list, folder_path):
 				for c in im.shape([1]):
 					new_im[r][c] = getIfromRGB(im[r][c])
 			im_arr.append(new_im)
+		else if(im.shape([2]) == 1):
+			im_arr.append(im)
 		else:
 			print("weird shape not rgb")
 	return im_arr
