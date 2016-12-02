@@ -1,5 +1,6 @@
 import os
 import pickle
+import numpy as np
 from scipy.misc import imread
 
 
@@ -35,27 +36,29 @@ def get_images(im_list, folder_path):
 	for name in im_list:
 		path = folder + name + ext
 		im = imread(path)
-		if(im.shape([2])==3):
+		if(im.shape([2]) == 3):
 			new_im = np.zeros(im.shape([0]), im.shape([1]))
 			for r in im.shape([0]):
 				for c in im.shape([1]):
 					new_im[r][c] = getIfromRGB(im[r][c])
 			im_arr.append(new_im)
 		else:
-			print("weird shape not rgb")				   	
- 	return im_arr
- 
+			print("weird shape not rgb")
+	return im_arr
+
+
 def getRGBfromI(RGBint):
-	blue =  RGBint & 255
-    	green = (RGBint >> 8) & 255
-    	red =   (RGBint >> 16) & 255
-    	return red, green, blue
+	blue = RGBint & 255
+	green = (RGBint >> 8) & 255
+	red = (RGBint >> 16) & 255
+	return red, green, blue
+
 
 def getIfromRGB(rgb):
-    	red = rgb[0]
-    	green = rgb[1]
-    	blue = rgb[2]
-    	RGBint = (red<<16) + (green<<8) + blue
+	red = rgb[0]
+	green = rgb[1]
+	blue = rgb[2]
+	RGBint = (red << 16) + (green << 8) + blue
 	return RGBint
 
 
