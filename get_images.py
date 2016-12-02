@@ -35,8 +35,28 @@ def get_images(im_list, folder_path):
 	for name in im_list:
 		path = folder + name + ext
 		im = imread(path)
-		im_arr.append(im)
-	return im_arr
+		new_im = np.zeros(im.shape([0]), im.shape([1]))
+		for r in im.shape([0]):
+			for c in im.shape([1]):
+				if(im.shape([2])==3):
+					new_im[r][c] = getIfromRGB(im[r][c])
+				else:
+					print("weird shape not rgb")				   
+		im_arr.append(new_im)
+ 	return im_arr
+ 
+def getRGBfromI(RGBint):
+	blue =  RGBint & 255
+    	green = (RGBint >> 8) & 255
+    	red =   (RGBint >> 16) & 255
+    	return red, green, blue
+
+def getIfromRGB(rgb):
+    	red = rgb[0]
+    	green = rgb[1]
+    	blue = rgb[2]
+    	RGBint = (red<<16) + (green<<8) + blue
+	return RGBint
 
 
 # Testing: Load first 5 images from list.txt
