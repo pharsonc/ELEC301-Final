@@ -6,6 +6,7 @@ Created on Thu Dec 01 22:49:48 2016
 """
 from get_images import *
 from bobo import *
+from Colonel_Thomas import *
 
 from sklearn import svm
 #from sklearn.model_selection import KFold
@@ -43,4 +44,5 @@ full_list = get_image_list('/annotations/list.txt')
 all_images = get_image(full_list, 1)
 all_labels = get_image(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
-# Call Chris' function to get a nice data matrix
+training_data = Colonel_Thomas(data_matrix_arr)
+model = Training_Thomas(training_data)
