@@ -5,7 +5,7 @@ Created on Mon Nov 28 17:16:35 2016
 @author: ChristopherChee
 """
 import numpy as np
-from sklearn.svm import SVM
+from sklearn import svm
 
 
 def Colonel_Thomas(matrices):
@@ -17,12 +17,12 @@ def Colonel_Thomas(matrices):
     # determine size of data matrix (spliced matrices)
     length = 0
     for matrix in matrices:
-        length = length + matrix.shape[2]
+        length = length + matrix.shape[1]
     # stack matrices
-    data = np.zeroes(6, length)
+    data = np.zeros((6, length))
     pointer = 0
     for matrix in matrices:
-        blocksize = matrix.shape[2]
+        blocksize = matrix.shape[1]
         data[:, pointer:blocksize] += matrix
         pointer += blocksize
     return data
@@ -34,6 +34,6 @@ def Train_Thomas(training_data):
     @params training_data: a matrix of stacked data points
     @return SVM: kernel SVM object for given data matrices
     """
-    kernel = SVM()
-    model = kernel.fit(training_data[0:5], training_data[[6]])
+    kernel = svm.SVM()
+    model = kernel.fit(training_data[0:4], training_data[[5]])
     return model

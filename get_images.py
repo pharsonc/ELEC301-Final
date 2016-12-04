@@ -36,14 +36,15 @@ def get_images(im_list, folder_path):
 	for name in im_list:
 		path = folder + name + ext
 		im = imread(path)
-		if(im.shape([2]) == 3):
-			new_im = np.zeros(im.shape([0]), im.shape([1]))
-			for r in im.shape([0]):
-				for c in im.shape([1]):
+		if(len(im.shape) == 2):
+			im_arr.append(im)
+		# Dealing with 3D matrices
+		elif(im.shape[2] == 3):
+			new_im = np.zeros((im.shape[0], im.shape[1]))
+			for r in range(im.shape[0]):
+				for c in range(im.shape[1]):
 					new_im[r][c] = getIfromRGB(im[r][c])
 			im_arr.append(new_im)
-		else if(im.shape([2]) == 1):
-			im_arr.append(im)
 		else:
 			print("weird shape not rgb")
 	return im_arr
