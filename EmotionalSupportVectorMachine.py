@@ -18,9 +18,10 @@ from Colonel_Thomas import *
 
 # Testing
 full_list = get_image_list('./annotations/list.txt')
-full_list = full_list[:5]
+full_list = full_list[:2]
 all_images = get_images(full_list, 1)
 all_labels = get_images(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
 training_data = Colonel_Thomas(data_matrix_arr)
-model = Training_Thomas(training_data)
+model = Train_Thomas(training_data)
+print 'done'
