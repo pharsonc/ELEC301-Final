@@ -9,10 +9,10 @@ from sklearn import svm
 from sklearn.model_selection import KFold
 from sklearn.metrics import confusion_matrix
 from sklearn.preprocessing import scale
-#from sklearn.svm.libsvm import predict
+# from sklearn.svm.libsvm import predict
 import scipy
 import matplotlib
-import numpy
+import numpy as np
 
 
 def Bob(training, labels):
@@ -21,21 +21,23 @@ def Bob(training, labels):
     @param training The training images in raw form.
     @return A transformed set of data matrices.
     """
-    #bigData = numpy.zeros(training.length)
+    # bigData = numpy.zeros(training.length)
     bigData = []
     for image, label in zip(training, labels):
-        data = numpy.zeros((6, image.shape[1]*image.shape[0]))
-        for x in xrange(image.shape[0]):
-            for y in xrange(image.shape[1]):
-                data[0][image.shape[0]*y + x] += image[x][y]
+        nrow = image.shape[0]
+        ncol = image.shape[1]
+        data = np.zeros((6, ncol * nrow))
+        for x in xrange(nrow):
+            for y in xrange(ncol):
+                data[0][nrow * y + x] += image[x][y]
                 if (x != 0):
-                    data[1][image.shape[0]*y + x] += image[x-1][y]
-                if (x != image.shape[0] - 1):
-                    data[2][image.shape[0]*y + x] += image[x+1][y]
+                    data[1][nrow * y + x] += image[x - 1][y]
+                if (x != nrow - 1):
+                    data[2][nrow * y + x] += image[x + 1][y]
                 if (y != 0):
-                    data[3][image.shape[0]*y + x] += image[x][y-1]
-                if (y != image.shape[1] - 1):
-                    data[4][image.shape[0]*y + x] += image[x][y+1]
-                data[5][image.shape[0]*y + x] += label[x][y]
-        bigData.append(data)
+                    data[3][nrow * y + x] += image[x][y - 1]
+                if (y != ncol - 1):
+                    data[4][nrow * y + x] += image[x][y + 1]
+                data[5][nrow * y + x] += label[x][y]
+        bigData.append(np.transpose(data))
     return bigData
