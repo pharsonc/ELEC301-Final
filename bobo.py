@@ -45,24 +45,24 @@ def Bob(training, labels):
         #             data[4][ncol * y + x] += image[x][y + 1]
         #         data[5][ncol * y + x] += label[x][y]
         # bigData.append(np.transpose(data))
-    data = np.zeros((ncol * nrow, 6))
-    for row in xrange(nrow):
-        for col in xrange(ncol):
-            # Pixel
-            data[ncol * row + col][0] += image[row][col]
-            # Left neighbor
-            if (col != 0):
-                data[ncol * row + col][1] += image[row][col - 1]
-            # Right neighbor
-            if (col != ncol - 1):
-                data[ncol * row + col][2] += image[row][col + 1]
-            # Top neighbor
-            if (row != 0):
-                data[ncol * row + col][3] += image[row - 1][col]
-            # Bottom neighbor
-            if (row != nrow - 1):
-                data[ncol * row + col][4] += image[row + 1][col]
-            # Label
-            data[ncol * row + col][5] += label[row][col]
+        data = np.zeros((ncol * nrow, 6))
+        for row in xrange(nrow):
+            for col in xrange(ncol):
+                # Pixel
+                data[ncol * row + col][0] += image[row][col]
+                # Left neighbor
+                if (col != 0):
+                    data[ncol * row + col][1] += image[row][col - 1]
+                # Right neighbor
+                if (col != ncol - 1):
+                    data[ncol * row + col][2] += image[row][col + 1]
+                # Top neighbor
+                if (row != 0):
+                    data[ncol * row + col][3] += image[row - 1][col]
+                # Bottom neighbor
+                if (row != nrow - 1):
+                    data[ncol * row + col][4] += image[row + 1][col]
+                # Label
+                data[ncol * row + col][5] += label[row][col]
         bigData.append(data)
     return bigData
