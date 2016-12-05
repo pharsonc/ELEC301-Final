@@ -30,3 +30,9 @@ def disp(image):
 	plt.show()
 	return
 
+def retrieve_image(labels,n,frow,fcol)
+	lis = inv_col(labels,n)
+	image = inv_Bob(lis,frow,fcol)
+	disp(image)
+	return
+
