@@ -21,7 +21,7 @@ def get_images(im_list, folder_path):
 	"""
 	Args:
 		im_list: A list of file names.
-		folder_path: 0 - /annotations/trimaps; 1 - /images/
+		folder_path: 0 - /annotations/trimaps/; 1 - /images/
 	Returns:
 		An array of numpy matrices representing all images
 	"""
