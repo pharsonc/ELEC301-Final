@@ -15,16 +15,19 @@ def Colonel_Thomas(matrices):
     @return data: a matrix of stacked data points
     """
     # determine size of data matrix (spliced matrices)
-    length = 0
-    for matrix in matrices:
-        length = length + matrix.shape[1]
-    # stack matrices
-    data = np.zeros((6, length))
-    pointer = 0
-    for matrix in matrices:
-        blocksize = matrix.shape[1]
-        data[:, pointer:blocksize] += matrix
-        pointer += blocksize
+    # length = 0
+    # for matrix in matrices:
+    #     length = length + matrix.shape[1]
+    # # stack matrices
+    # data = np.zeros((6, length))
+    # pointer = 0
+    # for matrix in matrices:
+    #     blocksize = matrix.shape[1]
+    #     data[:, pointer:blocksize] += matrix
+    #     pointer += blocksize
+    data = matrices[0]
+    for matrix in matrices[1:]:
+        data = np.vstack((data, matrix))
     return data
 
 
@@ -34,6 +37,6 @@ def Train_Thomas(training_data):
     @params training_data: a matrix of stacked data points
     @return SVM: kernel SVM object for given data matrices
     """
-    kernel = svm.SVM()
-    model = kernel.fit(training_data[0:4], training_data[[5]])
+    kernel = svm.SVC()
+    model = kernel.fit(training_data[:, 0:4], training_data[:, 5])
     return model
