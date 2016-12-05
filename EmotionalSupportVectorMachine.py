@@ -7,6 +7,7 @@ Created on Thu Dec 01 22:49:48 2016
 from get_images import *
 from bobo import *
 from Colonel_Thomas import *
+from invBob import *
 
 # from sklearn import svm
 # from sklearn.model_selection import KFold
@@ -24,4 +25,13 @@ all_labels = get_images(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
 training_data = Colonel_Thomas(data_matrix_arr)
 model = Train_Thomas(training_data)
-print 'done'
+
+# Very hard-coded test
+# Predicting on first image in training data
+test_image = all_images[0]
+rows = test_image.shape[0]
+cols = test_image.shape[1]
+test_data_matrix = data_matrix_arr[0]
+test_label = model.predict(test_data_matrix)
+# Reshaping etc
+reshaped = retrieve_image(test_label, [rows * cols], rows, cols)
