@@ -19,7 +19,7 @@ from invBob import *
 
 # Testing
 full_list = get_image_list('./annotations/list.txt')
-full_list = full_list[:2]
+# full_list = full_list[:2]
 all_images = get_images(full_list, 1)
 all_labels = get_images(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
