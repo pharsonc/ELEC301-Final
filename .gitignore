@@ -1,3 +1,10 @@
 # Ignoring dataset files
 annotations/
 images/
+test_images/
+
+*.xml
+
+*.iml
+
+*.pyc
