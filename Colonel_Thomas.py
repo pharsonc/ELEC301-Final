@@ -37,6 +37,7 @@ def Train_Thomas(training_data):
     @params training_data: a matrix of stacked data points
     @return SVM: kernel SVM object for given data matrices
     """
-    kernel = svm.SVC()
-    model = kernel.fit(training_data[:, 0:4], training_data[:, 5])
+    # kernel = svm.SVC()
+    kernel = svm.LinearSVC()    # For testing
+    model = kernel.fit(training_data[:, 0:5], training_data[:, 5])
     return model

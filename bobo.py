@@ -26,25 +26,6 @@ def Bob(training, labels):
     for image, label in zip(training, labels):
         nrow = image.shape[0]
         ncol = image.shape[1]
-        # data = np.zeros((6, ncol * nrow))
-        # for y in xrange(nrow):
-        #     for x in xrange(ncol):
-        #         # Pixel
-        #         data[0][ncol * y + x] += image[x][y]
-        #         # Top neighbor
-        #         if (x != 0):
-        #             data[1][ncol * y + x] += image[x - 1][y]
-        #         # Bottom neighbor
-        #         if (x != ncol - 1):
-        #             data[2][ncol * y + x] += image[x + 1][y]
-        #         # Left neighbor
-        #         if (y != 0):
-        #             data[3][ncol * y + x] += image[x][y - 1]
-        #         # Right neighbor
-        #         if (y != nrow - 1):
-        #             data[4][ncol * y + x] += image[x][y + 1]
-        #         data[5][ncol * y + x] += label[x][y]
-        # bigData.append(np.transpose(data))
         data = np.zeros((ncol * nrow, 6))
         for row in xrange(nrow):
             for col in xrange(ncol):

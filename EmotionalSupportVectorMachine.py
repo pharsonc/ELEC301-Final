@@ -31,7 +31,11 @@ model = Train_Thomas(training_data)
 test_image = all_images[0]
 rows = test_image.shape[0]
 cols = test_image.shape[1]
-test_data_matrix = data_matrix_arr[0]
+test_data_matrix = data_matrix_arr[0][:, 0:5]
 test_label = model.predict(test_data_matrix)
 # Reshaping etc
+# rows = 500
+# cols = 394
+# test_label = 2*np.ones((1, rows*cols))
 reshaped = retrieve_image(test_label, [rows * cols], rows, cols)
+disp(reshaped[0])
