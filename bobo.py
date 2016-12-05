@@ -64,4 +64,5 @@ def Bob(training, labels):
                 data[ncol * row + col][4] += image[row + 1][col]
             # Label
             data[ncol * row + col][5] += label[row][col]
+    bigData.append(data)
     return bigData
