@@ -9,6 +9,7 @@ from bobo import *
 from Colonel_Thomas import *
 from invBob import *
 
+from sklearn.externals import joblib
 # from sklearn import svm
 # from sklearn.model_selection import KFold
 # from sklearn.metrics import confusion_matrix
@@ -19,16 +20,21 @@ from invBob import *
 
 ########################### Testing ###########################
 """
-	Running the code the first time will form the data matrix
-	and save it to 'training_data.dat'.
+	Initial run: The training data matrix is computed and
+	stored in 'training_data.dat' - unless we change what our
+	data points are, this won't change -> section 1 can be
+	commented out.
 
-	To run the SVM, comment out everything in step 1,
-	uncomment step 2, and run.
+	Uncomment section 2 and run: the trained model is saved
+	into 'classifier.pkl'. Need to re-run this section if we
+	change our SVM stuff.
+
+	Comment out section 2, run section 3: Predicts labels.
 """
 ################## 1. FORMING DATA MATRICES ###################
 # TRAINING DATA
 full_list = get_image_list('./annotations/list.txt')
-# full_list = full_list[:2]
+full_list = full_list[:2]
 all_images = get_images(full_list, 1)
 all_labels = get_images(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
@@ -39,20 +45,27 @@ training_data = Colonel_Thomas(data_matrix_arr)
 # Saving data matrices to file
 save_matrix(training_data, 'training_data.dat')
 
-#################### 2. RUNNING SVM ###########################
+#################### 2. MAKING MODEL  #########################
 # training_data_ld = load_matrix('training_data.dat')
 # model = Train_Thomas(training_data_ld)
+#
+# # Save model
+# joblib.dump(model, 'classifier.pkl')
 
+#################### 3. TESTING MODEL  ########################
+# # Load model
+# model = joblib.load('classifier.pkl')
+#
 # # Very hard-coded test
 # # Predicting on first image in training data
-# test_image = all_images[0]
-# rows = test_image.shape[0]
-# cols = test_image.shape[1]
-# test_data_matrix = data_matrix_arr[0][:, 0:5]
+# test_image = get_images(['Abyssinian_100'], 1)
+# rows = test_image[0].shape[0]
+# cols = test_image[0].shape[1]
+#
+# # Just want the data matrix (ignore labels column)
+# test_data_matrix = Bob(test_image, test_image)
+# test_data_matrix = test_data_matrix[0][:, 0:5]
 # test_label = model.predict(test_data_matrix)
-# # Reshaping etc
-# # rows = 500
-# # cols = 394
-# # test_label = 2*np.ones((1, rows*cols))
+#
 # reshaped = retrieve_image(test_label, [rows * cols], rows, cols)
 # disp(reshaped[0])
