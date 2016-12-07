@@ -20,6 +20,33 @@ def Colonel_Thomas(matrices):
     return data
 
 
+def save_matrix(matrix, file):
+    """
+    Saves the matrix to a text file.
+
+    Args:
+        matrix (numpy.matrix): Matrix to be saved
+        file (str): File path to save the matrix to
+    Returns:
+        None
+    """
+    matrix.dump(file)
+    return
+
+
+def load_matrix(file):
+    """
+    Loads a matrix from the input file.
+
+    Args:
+        file (str): Path to text file containing the matrix
+    Returns:
+        matrix (numpy.matrix): Matrix read from file
+    """
+    matrix = np.load(file)
+    return matrix
+
+
 def Train_Thomas(training_data):
     """
     "Kernel" SVM method for training data.
