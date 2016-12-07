@@ -18,8 +18,8 @@ import numpy as np
 def Bob(training, labels):
     """
     Bob the builder builds your data matrix.
-    @param training A list of numpy matrices representing the training images.
-    @return A transformed list of data (numpy) matrices.
+    @param training (list): A list of 2D numpy arrays representing matrices/training images.
+    @return bigData (list): A transformed list of data (numpy) matrices.
     """
     # bigData = numpy.zeros(training.length)
     bigData = []
