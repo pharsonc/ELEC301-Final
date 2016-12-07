@@ -25,7 +25,8 @@ from invBob import *
 	To run the SVM, comment out everything in step 1,
 	uncomment step 2, and run.
 """
-#################### 1. FORMING DATA MATRIX ###################
+################## 1. FORMING DATA MATRICES ###################
+# TRAINING DATA
 full_list = get_image_list('./annotations/list.txt')
 # full_list = full_list[:2]
 all_images = get_images(full_list, 1)
@@ -33,12 +34,14 @@ all_labels = get_images(full_list, 0)
 data_matrix_arr = Bob(all_images, all_labels)
 training_data = Colonel_Thomas(data_matrix_arr)
 
-# Saving data matrix to file
+# TEST DATA
+
+# Saving data matrices to file
 save_matrix(training_data, 'training_data.dat')
 
 #################### 2. RUNNING SVM ###########################
-# test = load_matrix('training_data.dat')
-# model = Train_Thomas(training_data)
+# training_data_ld = load_matrix('training_data.dat')
+# model = Train_Thomas(training_data_ld)
 
 # # Very hard-coded test
 # # Predicting on first image in training data
