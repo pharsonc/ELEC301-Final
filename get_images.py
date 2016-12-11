@@ -1,5 +1,3 @@
-import os
-import pickle
 import numpy as np
 from scipy.misc import imread
 
@@ -102,11 +100,46 @@ def getIfromRGB(rgb):
 
 
 # Getting test images
-# def get_test_images():
-# 	num = range(1,45)
-# 	im_list = [str(n) + '.jpg' for n in num]
+def get_test_images():
+    """
+    Returns:
+        im_arr (list): A list of 2D numpy arrays representing test images
+    """
+    num = range(1, 2)
+    names = ['./test_images/' + str(n) + '.jpg' for n in num]
+    im_arr = []
+    for name in names:
+        im = imread(name)
+        if(len(im.shape) == 2):
+            im_arr.append(im)
+        # Dealing with 3D matrices
+        elif(im.shape[2] == 3):
+            new_im = np.zeros((im.shape[0], im.shape[1]))
+            for r in range(im.shape[0]):
+                for c in range(im.shape[1]):
+                    new_im[r][c] = getIfromRGB(im[r][c])
+            im_arr.append(new_im)
+        else:
+            print("weird shape not rgb")
+    return im_arr
+
+
+def get_image_dims(im_list):
+    """
+    Finds the dimensions of each image in the input list.
+    Args:
+            im_list (list): A list of 2D numpy arrays
+    Returns:
+            dims (list): A list of tuples (# rows, # cols)
+    """
+    dims = [im.shape for im in im_list]
+    return dims
 
 
 # Testing: Load first 5 images from list.txt
 # images = get_image_list('./annotations/list.txt')
 # arr = get_images(images[:5], 1)
+
+# Testing: Load test images
+# test_images = get_test_images()
+# test_image_dims = get_image_dims(test_images)
