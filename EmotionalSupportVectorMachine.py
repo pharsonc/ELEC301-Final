@@ -33,14 +33,9 @@ from sklearn.externals import joblib
 """
 ################## 1. FORMING DATA MATRICES ###################
 # TRAINING DATA
-full_list = get_image_list('./annotations/list.txt')
-full_list = full_list[:2]
-all_images = get_images(full_list, 1)
-all_labels = get_images(full_list, 0)
-data_matrix_arr = Bob(all_images, all_labels)
+image_zip = get_images2(full_list)
+data_matrix_arr = Bob2(image_zip)
 training_data = Colonel_Thomas(data_matrix_arr)
-
-# TEST DATA
 
 # Saving data matrices to file
 save_matrix(training_data, 'training_data.dat')
@@ -55,17 +50,22 @@ save_matrix(training_data, 'training_data.dat')
 #################### 3. TESTING MODEL  ########################
 # # Load model
 # model = joblib.load('classifier.pkl')
-#
+
 # # Very hard-coded test
 # # Predicting on first image in training data
 # test_image = get_images(['Abyssinian_100'], 1)
 # rows = test_image[0].shape[0]
 # cols = test_image[0].shape[1]
-#
+
 # # Just want the data matrix (ignore labels column)
 # test_data_matrix = Bob(test_image, test_image)
 # test_data_matrix = test_data_matrix[0][:, 0:5]
 # test_label = model.predict(test_data_matrix)
-#
+
 # reshaped = retrieve_image(test_label, [rows * cols], rows, cols)
 # disp(reshaped[0])
+
+# for n in range(len(reshaped)):
+# 	im = Image.fromarray(reshaped[n])
+# 	filename = 'segmented', n, '.png'
+# 	im.save(filename)
