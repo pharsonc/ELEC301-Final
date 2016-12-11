@@ -54,9 +54,8 @@ def get_images2(im_list):
     """
     Args:
         im_list (list): A list of file names.
-        folder_path (int): 0 - /annotations/trimaps/; 1 - /images/
     Returns:
-        im_arr (list): A list of 2D numpy arrays representing matrices/images
+        (list): A zipped list of 2D numpy arrays representing matrices/images
     """
     im_ext = '.jpg'
     im_folder = './images/'

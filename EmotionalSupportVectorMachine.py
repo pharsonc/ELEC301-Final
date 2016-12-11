@@ -33,6 +33,7 @@ from sklearn.externals import joblib
 """
 ################## 1. FORMING DATA MATRICES ###################
 # TRAINING DATA
+full_list = get_image_list('./annotations/list.txt')
 image_zip = get_images2(full_list)
 data_matrix_arr = Bob2(image_zip)
 training_data = Colonel_Thomas(data_matrix_arr)
