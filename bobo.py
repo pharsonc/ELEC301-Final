@@ -48,3 +48,38 @@ def Bob(training, labels):
                 data[ncol * row + col][5] += label[row][col]
         bigData.append(data)
     return bigData
+
+
+def Bob2(image_zip):
+    """
+    Bob the builder builds your data matrix.
+    @param training The training images in raw form.
+    @return A transformed set of data matrices.
+    """
+    # bigData = numpy.zeros(training.length)
+
+    bigData = []
+    for image, label in image_zip:
+        nrow = image.shape[0]
+        ncol = image.shape[1]
+        data = np.zeros((ncol * nrow, 6))
+        for row in xrange(nrow):
+            for col in xrange(ncol):
+                # Pixel
+                data[ncol * row + col][0] += image[row][col]
+                # Left neighbor
+                if (col != 0):
+                    data[ncol * row + col][1] += image[row][col - 1]
+                # Right neighbor
+                if (col != ncol - 1):
+                    data[ncol * row + col][2] += image[row][col + 1]
+                # Top neighbor
+                if (row != 0):
+                    data[ncol * row + col][3] += image[row - 1][col]
+                # Bottom neighbor
+                if (row != nrow - 1):
+                    data[ncol * row + col][4] += image[row + 1][col]
+                # Label
+                data[ncol * row + col][5] += label[row][col]
+        bigData.append(data)
+    return bigData
