@@ -48,7 +48,7 @@ save_matrix(training_data, 'training_data.dat')
 # # Save model
 # joblib.dump(model, 'classifier.pkl')
 
-#################### 3. TESTING MODEL  ########################
+#################### 3a. TESTING MODEL  #######################
 # # Load model
 # model = joblib.load('classifier.pkl')
 
@@ -63,10 +63,30 @@ save_matrix(training_data, 'training_data.dat')
 # test_data_matrix = test_data_matrix[0][:, 0:5]
 # test_label = model.predict(test_data_matrix)
 
-# reshaped = retrieve_image(test_label, [rows * cols], rows, cols)
+# reshaped = retrieve_image(test_label, [(rows, cols)])
 # disp(reshaped[0])
 
 # for n in range(len(reshaped)):
 # 	im = Image.fromarray(reshaped[n])
 # 	filename = 'segmented', n, '.png'
 # 	im.save(filename)
+
+#################### 3b. TESTING MODEL  #######################
+# # Load model
+# model = joblib.load('classifier.pkl')
+
+# # Get test images
+# test_images = get_test_images()
+# test_image_dims = get_image_dims(test_images)
+
+# test_data_matrix = Bob(test_images, test_images)
+# test_data_matrix = test_data_matrix[0][:, 0:5]
+# test_label = model.predict(test_data_matrix)
+
+# reshaped = retrieve_image(test_label, test_image_dims)
+# disp(reshaped[0])
+
+# for n in range(len(reshaped)):
+#     im = Image.fromarray(reshaped[n])
+#     filename = 'segmented', n, '.png'
+#     im.save(filename)
