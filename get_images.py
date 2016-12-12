@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.misc import imread
 
+from skimage import feature
+
 
 def get_image_list(path):
     """
@@ -77,7 +79,7 @@ def get_images2(im_list):
             for r in xrange(im.shape[0]):
                 for c in xrange(im.shape[1]):
                     new_im[r][c] = getIfromRGB(im[r][c])
-            # new_im = feature.canny(new_im) #canny edge detection
+            # new_im = feature.canny(new_im, sigma=3) #canny edge detection
             im_arr.append(new_im)
             lbl_arr.append(lbl)
         else:
