@@ -37,7 +37,7 @@ def get_images(im_list, folder_path):
         if(len(im.shape) == 2):
             im_arr.append(im)
         # Dealing with 3D matrices
-        elif(im.shape[2] == 3):
+        elif(im.shape[2] == 3) or (im.shape[2] == 4):
             new_im = np.zeros((im.shape[0], im.shape[1]))
             for r in range(im.shape[0]):
                 for c in range(im.shape[1]):
@@ -74,8 +74,8 @@ def get_images2(im_list):
         # Dealing with 3D matrices
         elif(im.shape[2] == 3):
             new_im = np.zeros((im.shape[0], im.shape[1]))
-            for r in range(im.shape[0]):
-                for c in range(im.shape[1]):
+            for r in xrange(im.shape[0]):
+                for c in xrange(im.shape[1]):
                     new_im[r][c] = getIfromRGB(im[r][c])
             new_im = feature.canny(new_im) #canny edge detection
             im_arr.append(new_im)
@@ -92,11 +92,23 @@ def getRGBfromI(RGBint):
     return red, green, blue
 
 
+# def getIfromRGB(rgb):
+#     red = rgb[0]
+#     green = rgb[1]
+#     blue = rgb[2]
+#     RGBint = (red << 16) + (green << 8) + blue
+#     return RGBint
+
+
 def getIfromRGB(rgb):
     red = rgb[0]
     green = rgb[1]
     blue = rgb[2]
-    RGBint = (red << 16) + (green << 8) + blue
+    if len(rgb) == 4:
+        alpha = rgb[3]
+        RGBint = (red << 24) + (green << 16) + (blue << 8) + alpha
+    else:
+        RGBint = (red << 16) + (green << 8) + blue
     return RGBint
 
 
