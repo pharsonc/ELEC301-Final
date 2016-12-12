@@ -179,6 +179,31 @@ def get_test_images():
     return im_arr
 
 
+def get_test_images2():
+    """
+    Returns:
+        im_arr (list): A list of 2D numpy arrays representing test images
+    """
+    num = range(1, 2)
+    names = ['./test_images/' + str(n) + '.jpg' for n in num]
+    im_arr = []
+    for name in names:
+        im = imread(name)
+        im = imresize(im, (400, 400))
+        if(len(im.shape) == 2):
+            im_arr.append(im)
+        # Dealing with 3D matrices
+        elif(im.shape[2] == 3):
+            new_im = np.zeros((im.shape[0], im.shape[1]))
+            for r in range(im.shape[0]):
+                for c in range(im.shape[1]):
+                    new_im[r][c] = getIfromRGB(im[r][c])
+            im_arr.append(new_im)
+        else:
+            print("weird shape not rgb")
+    return im_arr
+
+
 def get_image_dims(im_list):
     """
     Finds the dimensions of each image in the input list.
