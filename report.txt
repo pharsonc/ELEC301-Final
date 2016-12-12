@@ -1,0 +1,186 @@
+\documentclass[12pt,a4paper]{report}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+%\graphicspath{ {C:/Users/Joseph/Documents/GitHub/ELEC301-Final/} }
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{tocloft}
+\usepackage{fancyhdr}
+\usepackage{lipsum}
+\renewcommand{\cftsecleader}{\cftdotfill{\cftdotsep}} % for sections
+\renewcommand{\cftpartleader}{\cftdotfill{\cftdotsep}} % for parts
+\renewcommand{\thesection}{\Roman{section}} 
+
+\begin{document}
+\begin{titlepage}
+	\centering
+	\vspace{1cm}
+	{\scshape\Huge Image Classification of Cats and Dogs\par}
+	\vspace{3cm}
+	{\scshape\Large ELEC 301\par}
+	\vspace{.5cm}
+	{\scshape\Large December 5, 2016\par}
+	\vspace{1.5cm}
+	{\Large\itshape Pharson Chalermkraivuth, Chris Chee, 
+	Joseph D'Amico, Ben Wasserman\par}
+	\vspace{.5cm}
+	{\Large\itshape \#TeamBen\par}
+	\vfill
+	supervised by\par
+	Dr.~Jeff \textsc{Leviensie}
+\end{titlepage}
+
+%\pagestyle{empty}
+\clearpage
+
+
+%\vspace{1cm}
+\patchcmd{\abstract}{
+\pagestyle{empty}
+%\fancyhf{}
+%\fancyfoot[R]{\thepage{roman}}
+\pagenumbering{roman}
+%\fancyfoot[R]{\pagenumbering{roman}}
+In this project, our task was to classify different section of an image as either foreground or background, given various images of cats and dogs. We attempted to do this mainly with two main methods. The first was a traditional approach using support vector machine classification run on a grouping of each pixel with its neighbors. The second approach was a slightly more modern approach using neural networks and back propagation to get the data for the support vector machine. We iteratively improved our algorithm, until we got our final dice coefficient of 0.9243.
+\vfill}{}{}{}
+
+
+
+
+
+
+\clearpage
+\tableofcontents
+\listoffigures
+ 
+%\listoftables
+
+
+\clearpage
+\pagenumbering{arabic}
+\section{Introduction}
+Image segmentation is one of the most important problems in machine learning. It has applications in object recognition, image searches, etc. Any process that requires object recognition cannot begin without first segmenting an image into foreground and background. This can help to focus on only specific parts of an image that need to be processed while the rest of the image can be ignored. \\
+\\
+For this project, we are given a variety of images of both cats and dogs. Our goal is to distinguish which parts of the picture are the foreground and which are the background. To help us distinguish foreground from background, we train our data using the Oxford-IIT ``pets" data set. In other words, we need to label every pixel in the image as either part of the animal (cat or dog) or as not part of the animal. \\
+\\
+This report details our process for creating our segmentation classifier as well as our results and an analysis of those results. The first section outlines how our code for segmenting the images evolved as we moved forward with the project and gathered more data. Our system has many different parts that work together to process each image. The next section displays our results when testing our trained classifier. Finally, we will discuss the results of our classifier on testing data. From this, we will determine the strengths and weaknesses of our classifier. Based on the disadvantages that we find in our classifier, we can find ways to improve our classifier even further.
+
+\section{Method}
+Our original technique is based around using a simple Support Vector Machine (SVM) to
+classify the data.  We first transformed the images into a useful form by changing them from 3D to 2D matrices.  We then grouped each pixel with its neighbors, and made these groupings into columns of new data matrices, separated by image.  After that, we simply used the sci-kit learn module in python to create an SVM for our data matrices, and we used this SVM to fit the data.\\
+\\
+To prepare the images for the SVM analysis, we had to reduce the images from a 3D format to a 2D format. In order to reduce the images into an acceptable dimension, we converted the 3-value RGB format pictures to a 1-value RGB format. In raw form, the images had 3 numbers for each pixel to represent its color. However, the same pixel color can be represented by one integer by shifting the red, green, and blue values in binary and summing them. The result is an integer that represents a unique color.
+\\
+\\
+In order to form our data matrices for our SVM, we decided that each data point in the matrix would be a neighborhood rather than a single pixel. By using a neighborhood as a data point, we are looking at the color of each pixel and the colors of those around it to judge whether it is in the foreground or not. To take the neighborhood of each pixel, we iterated through each pixel of each image and appended its color value to our matrix. In the same row, we appended the color values of its upper, lower, right, and left neighbors. The result is a tall matrix with one row for each pixel and its neighborhood. To ease correct label association, we also added the known label for each pixel as the last column in our data matrix. We could use this later to help pass the correct data for each pixel.
+\\
+\\
+To run the data through an SVM, we then had to stack the matrices on top of each other. We cannot run each individual image’s data through the SVM to get meaningful results. It is important that we consolidate the individual image data into a large data matrix rather than multiple small ones. Taking all the small matrices, we stacked them onto each other vertically, making one long data matrix that contains data for all pixels in all of our images.
+\\
+\\
+After our data was prepared, we used a publicly available module to run an SVM algorithm. The sci-kit learn module includes an SVM function that allowed us to easily compute the kernel model for our data. However, the default function took longer than expected, so we used a less robust function that uses a different algorithm to compute our model more quickly. Instead of using the traditional Gaussian kernel that linearizes the data through a Gaussian function, this second model uses a polynomial 
+\\
+\\
+The Oxford-IIT ``pets” data set contains 7349 images of cats and dogs and their ground truth segmentations. The former (once transformed into appropriate data matrices) comprised the training data for our SVM, while the latter (flattened to a single array) served as the SVM labels. We were given a set of 44 test images to test the performance of our model. In our preliminary runs of the code, however, we ran the code at a much smaller scale in order to reduce run-time and identify bugs; the model was then tested on an image from the training set. In these runs, our training set size was 2. Our final version of the code will train on the entire ``pets” data set and produce segmentations for the given test images.
+
+\subsection{Sample Code}
+import\ numpy\ as\ np\\
+from\ sklearn\ import\ svm\\
+
+def\ Colonel\_Thomas(matrices):\\
+    """\\
+    Method\ to\ form\ the\ data\ matrix\ for\ SVM\\
+    @params\ matrices:\ a\ list\ of\ data\ matrices,\ one\ for\ each\ image\\
+    @return\ data:\ a\ matrix\ of\ stacked\ data\ points\\
+    """\\
+    \# determine\ size\ of\ data\ matrix\ (spliced\ matrices)\\
+    \# length = 0\\
+    \# for\ matrix\ in\ matrices:\\
+    \#     length = length\ +\ matrix.shape[1]\\
+    \# \# stack\ matrices\\
+    \# data = np.zeros((6, length))\\
+    \# pointer = 0\\
+    \# for\ matrix\ in\ matrices:\\
+    \#     blocksize = matrix.shape[1]\\
+    \#     data[:, pointer:blocksize] += matrix\\
+    \#     pointer += blocksize\\
+    data = matrices[0]\\
+    for\ matrix\ in\ matrices[1:]:\\
+        data = np.vstack((data, matrix))\\
+    return\ data\\
+\\
+def\ Train\_Thomas(training_data):\\
+    """\\
+    "Kernel"\ SVM\ method\ for\ training\ data.\\
+    @params\ training_data:\ a\ matrix\ of\ stacked\ data\ points\\
+    @return\ SVM:\ kernel\ SVM\ object\ for\ given\ data\ matrices\\
+    """\\
+    #\ kernel\ =\ svm.SVC()\\
+    kernel = svm.LinearSVC()\    # For testing\\
+    model = kernel.fit(training_data[:, 0:5],\ training_data[:, 5])\\
+    return\ model\\
+
+\\
+\# Testing\\
+full\_list = get\_image\_list('./annotations/list.txt')\\
+full\_list = full\_list[:2]\\
+all\_images = get\_images(full_list, 1)\\
+all\_labels = get\_images(full_list, 0)\\
+data\_matrix\_arr = Bob(all\_images, all\_labels)\\
+training\_data = Colonel\_Thomas(data\_matrix\_arr)\\
+model = Train\_Thomas(training\_data)\\
+\# Very\  hard-coded\  test\\
+\# Predicting\ on\ first\ image\ in\ training\ data\\
+test\_image = all\_images[0]\\
+rows = test\_image.shape[0]\\
+cols = test\_image.shape[1]\\
+test\_data\_matrix = data\_matrix\_arr[0][:, 0:5]\\
+test\_label = model.predict(test\_data\_matrix)\\
+reshaped = retrieve\_image(test\_label, [rows * cols], rows, cols)\\
+disp(reshaped[0])\\
+\section{Results}
+Our results lead us to believe that we have a very good classification system. The main way we scored our results was to compare the areas of the foreground and background of our segmented images to the corresponding areas from the ground truth. A dice coefficient is calculated according to the following formula:
+\begin{equation}
+QS = {\frac{2|X{\bigcap}Y|}{|X|+|Y|}}
+\end{equation}
+where $QS$ is the dice coefficient, $X$ is the number of foreground pixels predicted by our algorithm, and $Y$ is the ground-truth number of foreground pixels. Our original dice coefficient was 0.6720, but our current dice coefficient is 0.9243. Our current dice coefficient is very good, considering that the best possible dice coefficient is $1.0000$. While this also means that there is an error of approximately $7.57\%$, this error is acceptable given the difficult nature of this assignment. \\
+\\
+ In Figure 1, we provide a visual depiction of these results. In this figure, (a) is the original, unaltered image, (b) is the image after it has been run through our algorithm, and (c) is the ground-truth image segmentation provided to us. In (b) and (c), we blue represents foreground, green represents background, and red represents unsure points. As one can see from these images, our algorithm is capable of identifying the border of the cat, even if it does have slight misclassification within the foreground. Right now, our goal is to remove these errors within the boundary of the foreground to drive our dice coefficient even higher. 
+\begin{figure}[h]
+
+\centering
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{Abyssinian_100.png}
+        \caption{Original Image}
+        \label{fig:cat1}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{our_segmenting.png}
+        \caption{Our Segmentation}
+        \label{fig:cat2}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=\textwidth]{ground_truth_100.png}
+        \caption{Ground-Truth}
+        \label{fig:cat3}
+    \end{subfigure}
+    \textit{\caption{Image Comparisons}}
+    \label{fig:Image Comparisons}
+\end{figure}
+\section{Conclusions}
+Looking at how our segmentations compared to the ground truth (see Figure 1), we do see a rough outline of the cat that is the foreground image. We correctly labeled most of the pixels in the foreground as part of the foreground. However, looking outside the foreground, we labeled many parts of the background as part of the foreground. Looking at image 1a, we can see that the image is primarily made up of three colors: the orange, the blue bag-looking items, and the white bed they are on. Optimally, we want only the cat to be labeled as foreground, and the other two parts labeled as background. Our classifier is fairly successfully with the cat and white bed. However, it has some trouble correctly labeling the blue bags in the image. This can be seen in the large swaths of blue in figure 1b.  This means that we are overfitting the data. In order to fix this problem, we need to fine tune our support vector machine to be more strict on which pixels are labeled as foreground images. 
+\\ \\
+While the Support Vector Machine was able to segment the pictures accurately, we plan to explore other method of learning and classification. Hopefully, we will be able to reduce our error and prevent the overfitting in our model. This will lead to a much greater dice coefficient. One possible method we would like to try is to use a neural net. Neural nets use multiple layers of perceptrons that are connected to each other across layers. Every connection has a weight and every perceptron has a bias. As training data is passed through the neural net, the biases and weights are updated. Neural nets are capable of learning extremely complex processes. There is a lot of flexibility in choosing the size of a neural net. For future testing and experimentation, we will start with a neural net with 3 layers and 2 to 4 perceptrons in each layer. From there, we can expand on it by increasing the number of layers and/or changing the number of perceptrons in each layer. We believe that a well-trained neural net has the potential to outperform our SVM model. 
+\\ \\
+Another area for us to explore is pre-processing on our training images before they are passed into our classifier model. By finding known cat/dog classifiers, we can first separate our training data into a set of cat training images and a set of dog training images. Doing so will allow us to train two separate SVMS, one for each species - to test an image, we would first use the image classifier to determine the species represented, then predict labels using the corresponding SVM. By utilizing the fact that cats and dogs generally have different features, this new process should be able to create a better-fitting model for cats and dogs.
+\\ \\
+Another pre-processing method is edge-detection. The Scale Invariant Feature Transform (SIFT), for instance, is a form of feature representation of images that is invariant to scaling and orientation. Finding the SIFT features of images will transform the larger training data set into a set of representative features that are equally as informative as the original data; this decreases redundancy while also only focusing on aspects of the image that are considered ``important” to the classifier.
+
+
+
+
+\end{document}
+
