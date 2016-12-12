@@ -51,10 +51,10 @@ def retrieve_image(labels, im_dims):
     Returns:
         im_lis (list): A list of numpy matrices representing images
     """
-    n = len(im_dims)
+    n = [row * col for (row, col) in im_dims]
     lis = inv_col(labels, n)
     im_lis = []
-    for ind in range(n):
+    for ind in range(len(im_dims)):
         frow, fcol = im_dims[ind]
         image = inv_Bob(lis[ind], frow, fcol)
         im_lis.append(image)
