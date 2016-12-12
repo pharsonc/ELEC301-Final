@@ -160,7 +160,7 @@ def get_test_images():
     Returns:
         im_arr (list): A list of 2D numpy arrays representing test images
     """
-    num = range(1, 2)
+    num = range(1, 45)
     names = ['./test_images/' + str(n) + '.jpg' for n in num]
     im_arr = []
     for name in names:
@@ -183,12 +183,15 @@ def get_test_images2():
     """
     Returns:
         im_arr (list): A list of 2D numpy arrays representing test images
+        dims (list): A list of tuples (# rows, # cols)
     """
-    num = range(1, 2)
+    num = range(1, 45)
     names = ['./test_images/' + str(n) + '.jpg' for n in num]
     im_arr = []
+    dims = []
     for name in names:
         im = imread(name)
+        dims.append(im.shape[0:2])
         im = imresize(im, (400, 400))
         if(len(im.shape) == 2):
             im_arr.append(im)
@@ -201,7 +204,7 @@ def get_test_images2():
             im_arr.append(new_im)
         else:
             print("weird shape not rgb")
-    return im_arr
+    return im_arr, dims
 
 
 def get_image_dims(im_list):
@@ -214,11 +217,6 @@ def get_image_dims(im_list):
     """
     dims = [im.shape for im in im_list]
     return dims
-
-
-# Resize images
-def resize_image(image, width, height):
-	new_image = imresize(image, )
 
 
 # Testing: Load first 5 images from list.txt
