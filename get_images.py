@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.misc import imread
-
+from scipy.misc import imresize
 from skimage import feature
 
 
@@ -87,6 +87,46 @@ def get_images2(im_list):
     return zip(im_arr, lbl_arr)
 
 
+def get_images3(im_list):
+    """
+    Args:
+        im_list (list): A list of file names.
+    Returns:
+        (list): A zipped list of 2D numpy arrays representing matrices/images
+    """
+    im_ext = '.jpg'
+    im_folder = './images/'
+
+    lbl_ext = '.png'
+    lbl_folder = './annotations/trimaps/'
+
+    im_arr = []
+    lbl_arr = []
+    for name in im_list:
+        im_path = im_folder + name + im_ext
+        lbl_path = lbl_folder + name + lbl_ext
+        im = imread(im_path)
+        lbl = imread(lbl_path)
+        # Resizing
+        im = imresize(im, (400, 400))
+        lbl = imresize(lbl, (400, 400))
+        if(len(im.shape) == 2):
+            im_arr.append(im)
+            lbl_arr.append(lbl)
+        # Dealing with 3D matrices
+        elif(im.shape[2] == 3):
+            new_im = np.zeros((im.shape[0], im.shape[1]))
+            for r in xrange(im.shape[0]):
+                for c in xrange(im.shape[1]):
+                    new_im[r][c] = getIfromRGB(im[r][c])
+            # new_im = feature.canny(new_im, sigma=3) #canny edge detection
+            im_arr.append(new_im)
+            lbl_arr.append(lbl)
+        else:
+            print("weird shape not rgb")
+    return zip(im_arr, lbl_arr)
+
+
 def getRGBfromI(RGBint):
     blue = RGBint & 255
     green = (RGBint >> 8) & 255
@@ -149,6 +189,11 @@ def get_image_dims(im_list):
     """
     dims = [im.shape for im in im_list]
     return dims
+
+
+# Resize images
+def resize_image(image, width, height):
+	new_image = imresize(image, )
 
 
 # Testing: Load first 5 images from list.txt
