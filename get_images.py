@@ -77,6 +77,7 @@ def get_images2(im_list):
             for r in range(im.shape[0]):
                 for c in range(im.shape[1]):
                     new_im[r][c] = getIfromRGB(im[r][c])
+            new_im = feature.canny(new_im) #canny edge detection
             im_arr.append(new_im)
             lbl_arr.append(lbl)
         else:
