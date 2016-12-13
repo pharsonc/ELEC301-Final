@@ -54,7 +54,7 @@ def retrieve_image(labels, im_dims):
     n = [row * col for (row, col) in im_dims]
     lis = inv_col(labels, n)
     im_lis = []
-    for ind in range(len(im_dims)):
+    for ind in xrange(len(im_dims)):
         frow, fcol = im_dims[ind]
         image = inv_Bob(lis[ind], frow, fcol)
         im_lis.append(image)
