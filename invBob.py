@@ -1,4 +1,5 @@
 import numpy as np
+from scipy.misc import imresize
 from PIL import Image
 from matplotlib import pyplot as plt
 """
@@ -24,15 +25,18 @@ def inv_col(labels, n):
     """
     Args:
         labels (np.ndarray): A 1D array of predicted labels for some number of classified images
-        n: An array whose ith element is the size (rows * cols) of the ith image
+        n (int): Number of images
+        (OLD) n: An array whose ith element is the size (rows * cols) of the ith image
     Returns:
         separate (list): A list of columns represented as lists
     """
-    done = 0
-    separate = []
-    for ni in n:
-        separate.append(labels[done:done + ni])
-        done = done + ni
+    # done = 0
+    # separate = []
+    # for ni in n:
+    #     separate.append(labels[done:done + ni])
+    #     done = done + ni
+    # separate = np.reshape(labels, (30, 30, -1))
+    separate = np.split(labels, n)
     return separate
 
 
@@ -51,11 +55,17 @@ def retrieve_image(labels, im_dims):
     Returns:
         im_lis (list): A list of numpy matrices representing images
     """
-    n = [row * col for (row, col) in im_dims]
+    # n = [row * col for (row, col) in im_dims]
+    n = len(im_dims)
     lis = inv_col(labels, n)
     im_lis = []
-    for ind in range(len(im_dims)):
+    # for ind in range(len(im_dims)):
+    #     frow, fcol = im_dims[ind]
+    #     image = inv_Bob(lis[ind], frow, fcol)
+    #     im_lis.append(image)
+    for ind in range(n):
+        image = inv_Bob(lis[ind], 30, 30)
         frow, fcol = im_dims[ind]
-        image = inv_Bob(lis[ind], frow, fcol)
+        image = imresize(image, (frow, fcol))
         im_lis.append(image)
     return im_lis
