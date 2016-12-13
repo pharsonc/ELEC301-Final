@@ -8,15 +8,31 @@ import numpy as np
 from sklearn import svm
 
 
+# def Colonel_Thomas(matrices):
+#     """
+#     Method to form the data matrix for SVM
+#     @params matrices (list): a list of data (numpy) matrices, one for each image
+#     @return data (ndarray): a 2D numpy array representing matrix of stacked data points
+#     """
+#     data = matrices[0]
+#     for matrix in matrices[1:]:
+#         data = np.vstack((data, matrix))
+#     return data
+
+
 def Colonel_Thomas(matrices):
     """
     Method to form the data matrix for SVM
     @params matrices (list): a list of data (numpy) matrices, one for each image
     @return data (ndarray): a 2D numpy array representing matrix of stacked data points
     """
-    data = matrices[0]
-    for matrix in matrices[1:]:
-        data = np.vstack((data, matrix))
+    lengths = [mat.shape[0] for mat in matrices]
+    data = np.zeros((sum(lengths), 6))
+    ptr = 0
+    for i in xrange(len(lengths)):
+        print i
+        data[ptr:ptr+lengths[i]] = matrices[i]
+        ptr += lengths[i]
     return data
 
 
