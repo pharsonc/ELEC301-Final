@@ -102,14 +102,17 @@ def get_images3(im_list):
 
     im_arr = []
     lbl_arr = []
+    counter = 1
     for name in im_list:
+        print counter
         im_path = im_folder + name + im_ext
         lbl_path = lbl_folder + name + lbl_ext
         im = imread(im_path)
         lbl = imread(lbl_path)
         # Resizing
-        im = imresize(im, (400, 400))
-        lbl = imresize(lbl, (400, 400))
+        im = imresize(im, (30, 30))
+        lbl = imresize(lbl, (30, 30))
+        lbl = np.remainder(lbl, 2)
         if(len(im.shape) == 2):
             im_arr.append(im)
             lbl_arr.append(lbl)
@@ -124,6 +127,7 @@ def get_images3(im_list):
             lbl_arr.append(lbl)
         else:
             print("weird shape not rgb")
+        counter += 1
     return zip(im_arr, lbl_arr)
 
 
@@ -170,8 +174,8 @@ def get_test_images():
         # Dealing with 3D matrices
         elif(im.shape[2] == 3):
             new_im = np.zeros((im.shape[0], im.shape[1]))
-            for r in range(im.shape[0]):
-                for c in range(im.shape[1]):
+            for r in xrange(im.shape[0]):
+                for c in xrange(im.shape[1]):
                     new_im[r][c] = getIfromRGB(im[r][c])
             im_arr.append(new_im)
         else:
@@ -189,22 +193,53 @@ def get_test_images2():
     names = ['./test_images/' + str(n) + '.jpg' for n in num]
     im_arr = []
     dims = []
+    counter = 1
     for name in names:
+        print counter
         im = imread(name)
         dims.append(im.shape[0:2])
-        im = imresize(im, (400, 400))
+        im = imresize(im, (30, 30))
         if(len(im.shape) == 2):
             im_arr.append(im)
         # Dealing with 3D matrices
         elif(im.shape[2] == 3):
             new_im = np.zeros((im.shape[0], im.shape[1]))
-            for r in range(im.shape[0]):
-                for c in range(im.shape[1]):
+            for r in xrange(im.shape[0]):
+                for c in xrange(im.shape[1]):
                     new_im[r][c] = getIfromRGB(im[r][c])
             im_arr.append(new_im)
         else:
             print("weird shape not rgb")
+        counter += 1
     return im_arr, dims
+
+
+# def get_test_images3():
+#     """
+#     Returns:
+#         im_arr (list): A list of 2D numpy arrays representing test images
+#         dims (list): A list of tuples (# rows, # cols)
+#     """
+#     num = range(1, 45)
+#     names = ['./test_images/' + str(n) + '.jpg' for n in num]
+#     im_arr = np.zeros(45, dtype=object)
+#     dims = np.zeros(45, dtype=object)
+#     for i in range(len(names)):
+#         im = imread(names[i])
+#         dims[i] = im.shape[0:2]
+#         im = imresize(im, (30, 30))
+#         if len(im.shape) == 2:
+#             im_arr[i] = im
+#         # Dealing with 3D matrices
+#         elif im.shape[2] == 3:
+#             new_im = np.zeros((im.shape[0], im.shape[1]))
+#             for r in xrange(im.shape[0]):
+#                 for c in xrange(im.shape[1]):
+#                     new_im[r][c] = getIfromRGB(im[r][c])
+#             im_arr[i] = (new_im)
+#         else:
+#             print("weird shape not rgb")
+#     return im_arr, dims
 
 
 def get_image_dims(im_list):
