@@ -20,6 +20,8 @@
 	\vspace{3cm}
 	{\scshape\Large ELEC 301\par}
 	\vspace{.5cm}
+	{\scshape\Large Foreground-Background Image Segmentation\par}
+	\vspace{.5cm}
 	{\scshape\Large December 5, 2016\par}
 	\vspace{1.5cm}
 	{\Large\itshape Pharson Chalermkraivuth, Chris Chee, 
@@ -42,7 +44,7 @@
 %\fancyfoot[R]{\thepage{roman}}
 \pagenumbering{roman}
 %\fancyfoot[R]{\pagenumbering{roman}}
-In this project, our task was to classify different section of an image as either foreground or background, given various images of cats and dogs. We attempted to do this mainly with two main methods. The first was a traditional approach using support vector machine classification run on a grouping of each pixel with its neighbors. The second approach was a slightly more modern approach using neural networks and back propagation to get the data for the support vector machine. We iteratively improved our algorithm, until we got our final dice coefficient of 0.9243.
+In this project, our task was to classify different section of an image as either foreground or background, given various images of cats and dogs. We attempted to do this mainly with two main methods. The first was a traditional approach using support vector machine classification run on a grouping of each pixel with its neighbors. The second approach was a slightly more modern approach using neural networks and back propagation to get the data for the support vector machine. We iteratively improved our algorithm, increasing our dice coefficient to 0.9243.
 \vfill}{}{}{}
 
 
@@ -68,7 +70,7 @@ This report details our process for creating our segmentation classifier as well
 
 \section{Method}
 Our original technique is based around using a simple Support Vector Machine (SVM) to
-classify the data.  We first transformed the images into a useful form by changing them from 3D to 2D matrices.  We then grouped each pixel with its neighbors, and made these groupings into columns of new data matrices, separated by image.  After that, we simply used the sci-kit learn module in python to create an SVM for our data matrices, and we used this SVM to fit the data.\\
+classify the data.  We first transformed the images into a useful form by changing them from 3D to 2D matrices.  We then grouped each pixel with its neighbors, and made these groupings into columns of new data matrices, separated by image.  After that, we used the sci-kit learn module in python to create an SVM for our data matrices, and we used this SVM to fit the data.\\
 \\
 To prepare the images for the SVM analysis, we had to reduce the images from a 3D format to a 2D format. In order to reduce the images into an acceptable dimension, we converted the 3-value RGB format pictures to a 1-value RGB format. In raw form, the images had 3 numbers for each pixel to represent its color. However, the same pixel color can be represented by one integer by shifting the red, green, and blue values in binary and summing them. The result is an integer that represents a unique color.
 \\
@@ -140,11 +142,11 @@ test\_label = model.predict(test\_data\_matrix)\\
 reshaped = retrieve\_image(test\_label, [rows * cols], rows, cols)\\
 disp(reshaped[0])\\
 \section{Results}
-Our results lead us to believe that we have a very good classification system. The main way we scored our results was to compare the areas of the foreground and background of our segmented images to the corresponding areas from the ground truth. A dice coefficient is calculated according to the following formula:
+Our results lead us to believe that we have a fairly accurate classification system. The main way we scored our results was to compare the areas of the foreground and background of our segmented images to the corresponding areas from the ground truth. A dice coefficient is calculated according to the following formula:
 \begin{equation}
 QS = {\frac{2|X{\bigcap}Y|}{|X|+|Y|}}
 \end{equation}
-where $QS$ is the dice coefficient, $X$ is the number of foreground pixels predicted by our algorithm, and $Y$ is the ground-truth number of foreground pixels. Our original dice coefficient was 0.6720, but our current dice coefficient is 0.9243. Our current dice coefficient is very good, considering that the best possible dice coefficient is $1.0000$. While this also means that there is an error of approximately $7.57\%$, this error is acceptable given the difficult nature of this assignment. \\
+where $QS$ is the dice coefficient, $X$ is the number of foreground pixels predicted by our algorithm, and $Y$ is the ground-truth number of foreground pixels. Our original dice coefficient was 0.6720, but our current dice coefficient is 0.9243. While this means that there is an error of approximately $7.57\%$, this error is acceptable given the difficult nature of this assignment. \\
 \\
  In Figure 1, we provide a visual depiction of these results. In this figure, (a) is the original, unaltered image, (b) is the image after it has been run through our algorithm, and (c) is the ground-truth image segmentation provided to us. In (b) and (c), we blue represents foreground, green represents background, and red represents unsure points. As one can see from these images, our algorithm is capable of identifying the border of the cat, even if it does have slight misclassification within the foreground. Right now, our goal is to remove these errors within the boundary of the foreground to drive our dice coefficient even higher. 
 \begin{figure}[h]
