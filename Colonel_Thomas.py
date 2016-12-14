@@ -6,7 +6,7 @@ Created on Mon Nov 28 17:16:35 2016
 """
 import numpy as np
 from sklearn import svm
-
+from sklearn.ensemble import RandomForestClassifier
 
 # def Colonel_Thomas(matrices):
 #     """
@@ -70,6 +70,7 @@ def Train_Thomas(training_data):
     @return model: kernel SVM model for given data matrix
     """
     # kernel = svm.SVC()
-    kernel = svm.LinearSVC()    # For testing
+    # kernel = svm.LinearSVC()    # For testing
+    kernel = RandomForestClassifier()
     model = kernel.fit(training_data[:, 0:5], training_data[:, 5])
     return model
